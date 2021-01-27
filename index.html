@@ -1,0 +1,32 @@
+let off = true;
+let playDanmu = () => {
+  $(".bilibili-player-video-danmaku").bind('DOMNodeInserted', function (e) {
+    let div = document.createElement("div")
+    div.innerHTML = `
+    <audio id="tts_autio_id" autoplay="autoplay">
+      <source id="tts_source_id"
+        src="http://tts.baidu.com/text2audio?lan=zh&amp;ie=UTF-8&amp;spd=5&amp;per=1&amp;text=${$(e.target).html()}"
+        type="audio/mpeg">
+      <embed id="tts_embed_id" height="0" width="0" src="">
+    </audio>
+    `;
+    document.getElementsByTagName('body')[0].appendChild(div)
+  });
+  console.log('已开启弹幕语音播放功能，按p键关闭')
+}
+
+let closeDanmu = () => {
+  $(".bilibili-player-video-danmaku").unbind('DOMNodeInserted')
+  console.log('已关闭弹幕语音播放功能，按p键开启')
+}
+$(document).keydown(function (e) {
+  if (e && e.keyCode == 80) {
+    if (off) {
+      closeDanmu();
+    } else {
+      playDanmu();
+    }
+    off = !off
+  }
+});
+playDanmu();
